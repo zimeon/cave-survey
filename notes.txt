@@ -1,0 +1,36 @@
+From: "Paul R. Jorgenson" <ke7hr@mindspring.com>
+To: "Cavers Digest" <cavers@mars.ditell.com>
+Subject: International Foot
+Date: Fri, 30 Mar 2001 16:14:53 -0700
+
+
+George Dasher asked about the International Foot as opposed to the US Survey
+Foot.  Various states will, by law, use one or the other for their
+'standard' in State Plane Coordinate surveys.  Arizona uses the
+International Foot.
+
+Question
+How does a US Foot differ from an International Foot?
+
+Answer
+According to the Geodetic Glossary of the National Geodetic Survey (page
+82), a survey foot is a unit of length defined as 1/3 of a yard and equal in
+the US, since 1866, to exactly 1200/3937 (0.304800609) of a metre. The terms
+US foot and survey foot are used interchangeably in North America.
+
+The International foot is exactly 1/3 of the international yard, or exactly
+0.3048 metres. The International foot was defined, for scientific purposes
+by the 1959 agreement between the US NBS and similar organisations in other
+countries.
+
+ US foot 0.3048006096 metres (to ten decimal places)
+  International foot 0.3048 metres
+
+
+REFERENCE
+Geodetic Glossary of the National Geodetic Survey.
+
+===================================
+   Paul R. Jorgenson  KE7HR  NSS 39382FE
+     Phoenix, AZ -  No caves to speak of
+===================================
