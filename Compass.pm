@@ -1,9 +1,9 @@
-#!/usr/bin/perl
+package Compass;
 #
 # Routines to read and write files in COMPASS format
 # Simeon Warner - 15Apr2001
 #
-# [CVS: $Id: Compass.pm,v 1.1 2001/04/17 05:39:26 simeon Exp $]
+# [CVS: $Id: Compass.pm,v 1.2 2001/04/17 07:38:51 simeon Exp $]
 #
 use strict;
 
@@ -46,10 +46,10 @@ sub compassReadPage {
       # Comment
       push(@lines,['comment',$1]);
     } elsif ($line=~m/^\f/) {
-      return();
+      return('',$lineNum,$pageNum,[\%globals,\@lines]);
     } elsif ($line=~m/^\cZ/) {
       warn "Found end (^Z) at line $lineNum\n";
-      return('eof');
+      return('eof',$lineNum,$pageNum,[\%globals,\@lines]);
     } else {
       $lineInPage++;
       if ($lineInPage==1) {
@@ -63,9 +63,16 @@ sub compassReadPage {
         }
       } elsif ($lineInPage==3) {
         #SURVEY DATE: 12 8 1992  COMMENT:
-        if ($line=~/^SURVEY DATE:\s+(\d+)\s+(\d+)\s+(\d+)\s+(.*)/) {
+        if ($line=~/^SURVEY DATE:\s+(\d+)\s+(\d+)\s+(\d+)(\s+.+)?/) {
           $globals{'date'}="$2".$months[$1]."$3";
-          $globals{'comment'}=$4; 
+	  my $comment=$4;
+	  if ($comment!~m/^\s*$/) {
+	    if ($comment=~m/^\s+COMMENT:\s*(.*)/) {
+	      $globals{'comment'}=$1;
+	    } else {
+	      &mydie("Can't parse COMMENT: on line $lineNum (3) `$comment'");
+	    }
+	  }
         } else {
           &mydie("Can't parse line $lineNum (3) = $line\n");
         }
@@ -85,9 +92,11 @@ sub compassReadPage {
           $format=$3;
           $corrections=$4;
           if ($corrections) {
-            if ($corrections=~s/^\s+CORRECTIONS:\s*(.+)//) {
-	      $globals{'corrections'}=$1;
-            } else {
+            if ($corrections=~s/^\s+CORRECTIONS:\s*([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)//) {
+	      $globals{'correction_azm_plus'}=$1;
+ 	      $globals{'correction_inc_plus'}=$2;
+ 	      $globals{'correction_len_plus'}=$3;
+           } else {
               &mydie("Bad corrections on line $lineNum: $corrections\n");
             } 
           }
@@ -127,17 +136,17 @@ sub compassReadPage {
         foreach my $colNum (0..$#columnData) {
           $data{$columns[$colNum]}=$columnData[$colNum];
         }
-        push(@lines,['data',\%data]);
+        push(@lines,[$lineNum,'data',\%data]);
       }       
     }
   }
-  return('Unexpected end of file');
+  return('Unexpected end of file',$lineNum,$pageNum);
 }
 
 
 sub mydie {
   print "---DEATH DUMP---\n";
-  die join(" ",@_);
+  die join(" ",@_,"\n");
 }
 
 
