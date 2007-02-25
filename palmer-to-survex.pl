@@ -1,5 +1,10 @@
 #!/usr/bin/perl
 #
+# Convert cave survey data from the format used by Art Palmer's
+# DOS program SURVEY.EXE to the svx format of survex.
+# Simeon Warner
+#
+# $Id: palmer-to-survex.pl,v 1.2 2007/02/25 20:30:33 simeon Exp $x
 use strict;
 
 use Getopt::Std;
@@ -87,6 +92,7 @@ sub read_palmer {
   return($survey);
 }
 
+
 sub readline {
   my ($infh)=@_;
   my $c=<$infh> || &mydie("Unexpected end of file at line $linenum");
@@ -94,6 +100,7 @@ sub readline {
   $linenum++;
   return($c);
 }
+
 
 sub readnum {
   my ($infh)=@_;
@@ -103,6 +110,7 @@ sub readnum {
   return($n);
 }
   
+
 sub read_palmer_block {
   my ($infh)=@_;
   my %b;
